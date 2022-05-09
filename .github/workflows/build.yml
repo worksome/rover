@@ -14,6 +14,15 @@ jobs:
       - name: Fetch Sources
         uses: actions/checkout@v3
 
+      - name: test
+        run: gh release list -R apollographql/rover -L 1
+
+      - name: Get version
+        id: rover-version
+        run: |
+          VERSION="$(gh release list -R apollographql/rover -L 1 | cut -c1-6)"
+          echo "::set-output name=version::$VERSION"
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
 
@@ -25,12 +34,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Get version
-        id: rover-version
-        run: |
-          VERSION="$(gh release list -R apollographql/rover -L 1 | cut -c1-6)"
-          echo "::set-output name=version::$VERSION"
 
       - name: Build and push
         uses: docker/build-push-action@v2
