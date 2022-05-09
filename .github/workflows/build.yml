@@ -18,12 +18,16 @@ jobs:
 
       - name: test
         run: gh auth status
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get version
         id: rover-version
         run: |
           VERSION="$(gh release list -R apollographql/rover -L 1 | cut -c1-6)"
           echo "::set-output name=version::$VERSION"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
