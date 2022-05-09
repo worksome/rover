@@ -32,7 +32,7 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          build-args: version=v0.4.8
+          build-args: version=v0.6.0
           tags: |
             worksome/rover:latest
-            worksome/rover:0.4.8
+            worksome/rover:0.6.0
