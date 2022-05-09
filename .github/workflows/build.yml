@@ -16,15 +16,11 @@ jobs:
       - name: Fetch Sources
         uses: actions/checkout@v3
 
-      - name: test
-        run: gh auth status
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Get version
         id: rover-version
         run: |
-          VERSION="$(gh release list -R apollographql/rover -L 1 | cut -c1-6)"
+          VERSION="$(gh release list -R apollographql/rover -L 1 | cut -c2-6)"
+          echo "Latest version is $VERSION"
           echo "::set-output name=version::$VERSION"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -47,7 +43,7 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          build-args: version=${{ steps.rover-version.outputs.version }}
+          build-args: version=v${{ steps.rover-version.outputs.version }}
           tags: |
             worksome/rover:latest
             worksome/rover:${{ steps.rover-version.outputs.version }}
