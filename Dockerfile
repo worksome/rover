@@ -15,7 +15,7 @@ RUN echo $BUILDVARIANT - variant component of BUILDPLATFORM
 #RUN curl -sSL https://rover.apollo.dev/nix/${version} > installscript.sh
 #RUN sed -i 's/set -u/set -eoux pipefail/g' installscript.sh
 #RUN cat installscript.sh
-ADD installscript.sh
+COPY installscript.sh .
 RUN sh installscript.sh
 
 FROM alpine as runner
