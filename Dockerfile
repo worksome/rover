@@ -16,7 +16,7 @@ RUN echo $BUILDVARIANT - variant component of BUILDPLATFORM
 #RUN sed -i 's/set -u/set -eoux pipefail/g' installscript.sh
 #RUN cat installscript.sh
 COPY installscript.sh .
-RUN sh installscript.sh
+RUN ./installscript.sh
 
 FROM alpine as runner
 
