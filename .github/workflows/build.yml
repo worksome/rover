@@ -55,7 +55,7 @@ jobs:
         with:
           context: .
           platforms: linux/amd64,linux/arm64
-          push: true
+          push: false
           # add 'v' back in to the version again as the rover install command expects it
           build-args: version=v${{ steps.rover-version.outputs.version }}
           tags: ${{ steps.docker-image-meta-data.outputs.tags}}
