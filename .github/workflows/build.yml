@@ -19,10 +19,12 @@ jobs:
 
       - name: Get version
         id: rover-version
+        # release version are prefixed with 'v' in the project
         run: |
-          VERSION="$(gh release list -R apollographql/rover -L 1 | cut -c2-6)"
+          VERSION="$(gh release list -R apollographql/rover -L 1 | cut -f1 | cut -c2-)"
           echo "Latest version is $VERSION"
-          echo "::set-output name=version::$VERSION"
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          if $(echo $VERSION | grep -Pq '^([1-9]\d*|0)(\.(([1-9]\d*)|0)){2}$'); then echo "NON_PRERELEASE=true" >> $GITHUB_OUTPUT; fi;
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -38,13 +40,22 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Generate Docker image meta data
+        id: docker-image-meta-data
+        uses: docker/metadata-action@v4
+        with:
+          images: |
+            name=worksome/rover,enable=true
+          tags: |
+            type=raw,value=${{ steps.rover-version.outputs.VERSION }},enable=true
+            type=raw,value=latest,enable=${{ (steps.rover-version.outputs.NON_PRERELEASE == 'true') }}
+
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
+          # add 'v' back in to the version again as the rover install command expects it
           build-args: version=v${{ steps.rover-version.outputs.version }}
-          tags: |
-            worksome/rover:latest
-            worksome/rover:${{ steps.rover-version.outputs.version }}
+          tags: ${{ steps.docker-image-meta-data.outputs.tags}}
