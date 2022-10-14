@@ -2,6 +2,14 @@ ARG version
 
 FROM alpine/curl as installer
 ARG version
+ARG TARGETPLATFORM
+ARG TARGETOS
+ARG TARGETARCH
+ARG TARGETVARIANT
+ARG BUILDPLATFORM
+ARG BUILDOS
+ARG BUILDARCH
+ARG BUILDVARIANT
 
 RUN echo $TARGETPLATFORM - platform of the build result. Eg linux/amd64, linux/arm/v7, windows/amd64.
 RUN echo $TARGETOS - OS component of TARGETPLATFORM
@@ -16,6 +24,7 @@ RUN echo $BUILDVARIANT - variant component of BUILDPLATFORM
 #RUN sed -i 's/set -u/set -eoux pipefail/g' installscript.sh
 #RUN cat installscript.sh
 COPY installscript.sh .
+RUN chmod +x installscript.sh
 RUN ./installscript.sh
 
 FROM alpine as runner
