@@ -25,6 +25,7 @@ RUN echo $BUILDVARIANT - variant component of BUILDPLATFORM
 #RUN cat installscript.sh
 COPY installscript.sh .
 RUN chmod +x installscript.sh
+RUN pwd && ls -al
 RUN installscript.sh
 
 FROM alpine as runner
