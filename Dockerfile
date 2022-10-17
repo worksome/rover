@@ -1,6 +1,7 @@
 ARG version
 
 FROM debian:stable-slim as installer
+ARG version
 
 RUN apt update && apt install -y curl
 
@@ -11,6 +12,8 @@ RUN sed -i 's/set -u/set -eoux pipefail/g' installscript.sh
 RUN chmod +x installscript.sh
 #RUN pwd && ls -al
 #RUN env
+
+
 
 RUN ./installscript.sh
 
