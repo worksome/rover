@@ -20,13 +20,13 @@ RUN echo $BUILDOS - OS component of BUILDPLATFORM
 RUN echo $BUILDARCH - architecture component of BUILDPLATFORM
 RUN echo $BUILDVARIANT - variant component of BUILDPLATFORM
 
-#RUN curl -sSL https://rover.apollo.dev/nix/${version} > installscript.sh
-#RUN sed -i 's/set -u/set -eoux pipefail/g' installscript.sh
+RUN curl -sSL https://rover.apollo.dev/nix/${version} > installscript.sh
+RUN sed -i 's/set -u/set -eoux pipefail/g' installscript.sh
 #RUN cat installscript.sh
-COPY installscript.sh .
+#COPY installscript.sh .
 RUN chmod +x installscript.sh
-RUN pwd && ls -al
-RUN env
+#RUN pwd && ls -al
+#RUN env
 
 RUN apt update && apt install -y curl
 
