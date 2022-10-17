@@ -98,7 +98,7 @@ download_binary_and_run_installer() {
 
 get_architecture() {
     local _ostype="$(uname -s)"
-    local _cputype="${TARGETPLATFORM:-`uname -m`}"
+    local _cputype="${TARGETARCH:-`uname -m`}"
 
     if [ "$_ostype" = Darwin -a "$_cputype" = i386 ]; then
         # Darwin `uname -s` lies
