@@ -1,6 +1,6 @@
 ARG version
 
-FROM alpine/curl as installer
+FROM debian:stable-slim as installer
 ARG version
 ARG TARGETPLATFORM
 ARG TARGETOS
@@ -27,9 +27,12 @@ COPY installscript.sh .
 RUN chmod +x installscript.sh
 RUN pwd && ls -al
 RUN env
-RUN cat installscript.sh | sh
 
-FROM alpine as runner
+RUN apt update && apt install -y curl
+
+RUN ./installscript.sh
+
+FROM debian:stable-slim as runner
 
 COPY --from=installer /root/.rover/bin/rover /root/.rover/bin/rover
 ENV PATH="/root/.rover/bin:${PATH}"
