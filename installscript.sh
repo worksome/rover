@@ -107,6 +107,11 @@ get_architecture() {
         fi
     fi
 
+    if [ "$_ostype" = Linux -a "$_cputype" = arm64 ]; then
+        # cputype we want is called aarch64, not arm64 (they are equivalent) - see other original comment below
+        local _cputype=aarch64
+    fi
+
     if [ "$_ostype" = Darwin -a "$_cputype" = arm64 ]; then
         # Darwin `uname -s` doesn't seem to lie on Big Sur
         # but the cputype we want is called aarch64, not arm64 (they are equivalent)
