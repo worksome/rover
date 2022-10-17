@@ -1,5 +1,7 @@
 ARG version
 
+# We would rather use Alpine, but we want ARM64 and misses
+# aarch64 musl binaries from the Rover project.
 FROM debian:stable-slim as installer
 ARG version
 
